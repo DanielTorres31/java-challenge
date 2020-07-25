@@ -45,12 +45,12 @@ public class BaseService<T extends BaseEntity> implements IBaseService<T> {
 	}
 
 	@Override
-	public T update(Long id, T entity) {
+	public T update(Long id, T entity) throws NotFoundException {
 		try {
 			Optional<T> fetchedEntity = repository.findById(id);
 
 			if (!fetchedEntity.isPresent()) {
-				new NotFoundException("Registro não encontrado para atualização");
+				throw new NotFoundException("Registro não encontrado para atualização");
 			}
 
 			entity.setId(id);
@@ -61,12 +61,12 @@ public class BaseService<T extends BaseEntity> implements IBaseService<T> {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id) throws NotFoundException {
 		try {
 			Optional<T> fetchedEntity = repository.findById(id);
 
 			if (!fetchedEntity.isPresent()) {
-				new NotFoundException("Registro não encontrado para exclusão");
+				throw new NotFoundException("Registro não encontrado para exclusão");
 			}
 
 			repository.deleteById(id);
