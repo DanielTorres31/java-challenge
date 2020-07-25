@@ -1,11 +1,16 @@
 package com.inter.api.technicalTest.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inter.api.technicalTest.model.Calculation;
 import com.inter.api.technicalTest.model.User;
 import com.inter.api.technicalTest.repository.ICalculationRepository;
 import com.inter.api.technicalTest.repository.IUserRepository;
+
+import javassist.NotFoundException;
 
 @Service
 public class UserService extends BaseService<User> implements IUserService {
@@ -19,14 +24,19 @@ public class UserService extends BaseService<User> implements IUserService {
 	}
 
 	@Override
-	public Integer calculatesSingleDigit(Long userId, String n, Integer k) {
+	public Calculation calculatesSingleDigit(Long userId, String n, Integer k) throws NotFoundException {
+		Optional<User> user = this.findById(userId);
 		
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < k; i++) {
-			sb.append(n);
+		if(!user.isPresent()) {
+			throw new NotFoundException("Usuário não encontrado");
 		}
 		
-		return singleDigit(sb.toString());
+		Calculation calculation = new Calculation(n, k, userId);
+		calculation.setSingleDigit(singleDigit(calculatesP(n, k)));
+		
+		calculationRepository.save(calculation);
+		
+		return calculation;
 	}
 	
 	private Integer singleDigit(String p) {
@@ -39,5 +49,14 @@ public class UserService extends BaseService<User> implements IUserService {
 		
 		return singleDigit;
 	}
-
+	
+	private String calculatesP(String n, Integer k) {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < k; i++) {
+			sb.append(n);
+		}
+		
+		return sb.toString();
+	}
+	
 }
