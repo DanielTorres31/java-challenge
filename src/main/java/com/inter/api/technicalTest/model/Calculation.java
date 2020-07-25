@@ -6,12 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Calculation extends BaseEntity {
 	
 	@Id
@@ -29,4 +31,10 @@ public class Calculation extends BaseEntity {
 	
 	@Column(nullable = false)
 	@Getter @Setter private Integer singleDigit;
+	
+	public Calculation(String n, Integer k, Long userId) {
+		this.n = n;
+		this.k = k;
+		this.userId = userId;
+	}
 }
