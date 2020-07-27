@@ -1,10 +1,9 @@
 package com.inter.api.technicalTest.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inter.api.technicalTest.cache.CalculationCache;
 import com.inter.api.technicalTest.model.Calculation;
 import com.inter.api.technicalTest.model.User;
 import com.inter.api.technicalTest.repository.ICalculationRepository;
@@ -25,15 +24,18 @@ public class UserService extends BaseService<User> implements IUserService {
 
 	@Override
 	public Calculation calculatesSingleDigit(Long userId, String n, Integer k) throws NotFoundException {
-		Optional<User> user = this.findById(userId);
+		this.findById(userId);
 		
-		if(!user.isPresent()) {
-			throw new NotFoundException("Usuário não encontrado");
-		}
+		Integer cachedSingleDigit = CalculationCache.getFromCache(n, k);
 		
 		Calculation calculation = new Calculation(n, k, userId);
-		calculation.setSingleDigit(singleDigit(calculatesP(n, k)));
+		calculation.setSingleDigit(
+				cachedSingleDigit != null ? 
+				cachedSingleDigit : 
+				singleDigit(calculatesP(n, k))
+			);
 		
+		CalculationCache.addOnCache(calculation);
 		calculationRepository.save(calculation);
 		
 		return calculation;
