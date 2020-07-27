@@ -23,6 +23,8 @@ import com.inter.api.technicalTest.model.Calculation;
 import com.inter.api.technicalTest.model.User;
 import com.inter.api.technicalTest.service.IUserService;
 
+import javassist.NotFoundException;
+
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
@@ -37,10 +39,14 @@ public class UserController {
 		try {
 			Calculation calculation = userService.calculatesSingleDigit(userId, n, k);
 			return ResponseEntity.ok(new Response<Calculation>(HttpStatus.OK.value(), calculation));
-		} catch (Exception e) {
+		} catch(NotFoundException e) {
 			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response<Calculation>(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+		} catch (Exception e1) {
+			log.error(e1.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response<Calculation>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+					.body(new Response<Calculation>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e1.getMessage()));
 		}
 	}
 
@@ -59,8 +65,12 @@ public class UserController {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<User>> findById(@PathVariable("id") Long id) {
 		try {
-			User user = userService.findById(id).orElse(null);
+			User user = userService.findById(id);
 			return ResponseEntity.ok(new Response<>(HttpStatus.OK.value(), user));
+		} catch(NotFoundException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response<User>(HttpStatus.NOT_FOUND.value(), e.getMessage()));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,6 +95,10 @@ public class UserController {
 		try {
 			User updatedUser = userService.update(id, user);
 			return ResponseEntity.ok(new Response<>(HttpStatus.OK.value(), updatedUser));
+		} catch(NotFoundException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response<User>(HttpStatus.NOT_FOUND.value(), e.getMessage()));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -97,6 +111,10 @@ public class UserController {
 		try {
 			userService.delete(id);
 			return ResponseEntity.ok(new Response<>(HttpStatus.OK.value()));
+		} catch(NotFoundException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response<User>(HttpStatus.NOT_FOUND.value(), e.getMessage()));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

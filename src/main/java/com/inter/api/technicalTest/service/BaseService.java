@@ -27,9 +27,15 @@ public class BaseService<T extends BaseEntity> implements IBaseService<T> {
 	}
 
 	@Override
-	public Optional<T> findById(Long id) {
+	public T findById(Long id) throws NotFoundException {
 		try {
-			return repository.findById(id);
+			Optional<T> entity = repository.findById(id);
+			
+			if(!entity.isPresent()) {
+				throw new NotFoundException("Registro não encontrado");
+			}
+			
+			return entity.get();
 		} catch (Exception e) {
 			throw e;
 		}
