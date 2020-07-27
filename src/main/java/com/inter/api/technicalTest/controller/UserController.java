@@ -2,6 +2,8 @@ package com.inter.api.technicalTest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ public class UserController {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<User>> create(@RequestBody User user) {
+	public ResponseEntity<Response<User>> create(@Valid @RequestBody User user) {
 		try {
 			User createdUser = userService.create(user);
 			return ResponseEntity.ok(new Response<>(HttpStatus.OK.value(), createdUser));
@@ -91,7 +93,7 @@ public class UserController {
 	}
 
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<Response<User>> update(@PathVariable("id") Long id, @RequestBody User user) {
+	public ResponseEntity<Response<User>> update(@PathVariable("id") Long id, @Valid @RequestBody User user) {
 		try {
 			User updatedUser = userService.update(id, user);
 			return ResponseEntity.ok(new Response<>(HttpStatus.OK.value(), updatedUser));
