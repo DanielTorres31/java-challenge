@@ -1,0 +1,683 @@
+{
+	"info": {
+		"_postman_id": "145e1aab-a77a-4958-ab76-74ec49e58878",
+		"name": "Java Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SingleDigit",
+			"item": [
+				{
+					"name": "SingleDigit - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44f8f512-25a7-49e6-b644-7bfb7ef19a43",
+								"exec": [
+									"pm.test('Deve retornar status 200', function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve retornar o body correto', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.body.singleDigit).to.equal(116);\r",
+									"    pm.expect(response.code).to.equal(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e726c34a-8f3b-44c1-96ac-dd91b0b803da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/{{user1}}/singleDigit?n=9875&k=4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{user1}}",
+								"singleDigit"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "9875"
+								},
+								{
+									"key": "k",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SingleDigit - error 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0447e1f5-481c-42cd-9b91-922ea73f9bcc",
+								"exec": [
+									"pm.test('Deve retornar status 404', function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve apresentar mensagem de erro', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.detail).to.equal('Registro não encontrado')\r",
+									"    pm.expect(response.code).to.equal(404)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/999/singleDigit?n=9875&k=4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"999",
+								"singleDigit"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "9875"
+								},
+								{
+									"key": "k",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FindAll",
+			"item": [
+				{
+					"name": "FindAll - success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "87f347d0-3624-4afa-9e66-c8013bb1f8d8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "df29744d-42d7-4d16-bae8-148e25539941",
+								"exec": [
+									"pm.test('Deve retornar status 200', function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Deve retornar 2 usuarios', function() {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.code).to.equal(200);\r",
+									"    pm.expect(response.body.length).to.equal(2);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FindById",
+			"item": [
+				{
+					"name": "FindById - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "834d44cc-895b-4b13-8d82-d45ef7abbe45",
+								"exec": [
+									"pm.test('Deve retornar status 200', function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve retornar usuário', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.code).to.equal(200)\r",
+									"    pm.expect(response.body.name).to.equal('Daniel')\r",
+									"    pm.expect(response.body.email).to.equal('daniel@email.com')\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/{{user1}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById - error 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3694218e-342a-42ff-9bc7-0f46575be065",
+								"exec": [
+									"pm.test('Deve retornar status 404', function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve apresentar mensagem de erro', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.detail).to.equal('Registro não encontrado')\r",
+									"    pm.expect(response.code).to.equal(404)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/999",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"999"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create",
+			"item": [
+				{
+					"name": "Create - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bbf7a4ef-50cd-47f7-a635-a159a57d74c0",
+								"exec": [
+									"pm.test('Deve retornar status 200', function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve criar usuário correto', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.body.name).to.equal('Felipe')\r",
+									"    pm.expect(response.body.email).to.equal('felipe@email.com')\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve excluir o usuário após testes', function() {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.environment.get('BASE_URL') + '/users/' + response.body.id,\r",
+									"        method: 'DELETE',\r",
+									"    }, function (err, res) {\r",
+									"        pm.expect(res.code).to.equal(200)\r",
+									"    })\r",
+									"})\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Felipe\",\n    \"email\": \"felipe@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create - error 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c532cfb-284e-43a9-9bae-3140c02035c2",
+								"exec": [
+									"pm.test('Deve retornar status 400', function () {\r",
+									"    pm.response.to.have.status(400)\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email@emtai.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "Update - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "67bcb2b0-aaf8-489c-848a-537f94788b9f",
+								"exec": [
+									"pm.test('Deve retornar status 200', function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve alterar usuário correto', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.body.name).to.equal('José')\r",
+									"    pm.expect(response.body.email).to.equal('jose@email.com')\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"José\",\n    \"email\": \"jose@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/{{user1}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update - error 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91364fb3-9e60-4b52-9661-c93b2de6daf9",
+								"exec": [
+									"pm.test('Deve retornar status 400', function () {\r",
+									"    pm.response.to.have.status(400)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"danieltorres31@outlook.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/{{user1}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update - error 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2ac28cd3-26e9-4512-96f4-6422c99fa2ed",
+								"exec": [
+									"pm.test('Deve retornar status 404', function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve apresentar mensagem de erro', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.detail).to.equal('Registro não encontrado para atualização')\r",
+									"    pm.expect(response.code).to.equal(404)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1,\n    \"name\": \"Felipe\",\n    \"email\": \"danieltorres31@outlook.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/999",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"999"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete - success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a11795a5-640e-47fb-ba68-207e422980bf",
+								"exec": [
+									"pm.test('Deve retornar status 200', function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test('Não deve encontrar usuario excluído', function () {\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.environment.get('BASE_URL') + '/users/' + pm.collectionVariables.get('user1'),\r",
+									"        method: 'DELETE',\r",
+									"    }, function (err, res) {\r",
+									"        pm.expect(res.code).to.equal(404)\r",
+									"        pm.expect(res.status).to.equal('Not Found')\r",
+									"    })\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/{{user1}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - error 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5c76b23c-36c9-4ac7-b0e1-925499c254f2",
+								"exec": [
+									"pm.test('Deve retornar status 404', function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve apresentar mensagem de erro', function () {\r",
+									"    const response = JSON.parse(pm.response.stream.toString('utf8'));\r",
+									"    pm.expect(response.detail).to.equal('Registro não encontrado para exclusão')\r",
+									"    pm.expect(response.code).to.equal(404)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/999",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"999"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "550459a1-32fa-4966-bc21-25a2f045da7a",
+				"type": "text/javascript",
+				"exec": [
+					"createUser('Daniel', 'daniel@email.com', 'user1');",
+					"createUser('João', 'joao@email.com', 'user2');",
+					"",
+					"function createUser(name, email, variableName) {",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('BASE_URL') + '/users',",
+					"        method: 'POST',",
+					"        headers: 'Content-Type:application/json',",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                name: name,",
+					"                email: email",
+					"            }),",
+					"            options: {",
+					"                raw: {",
+					"                    language: \"json\"",
+					"                }",
+					"            }",
+					"        }",
+					"    }, function (err, res) {",
+					"        if (err) {",
+					"            throw new Error('Não conseguiu criar o usuário')",
+					"            return",
+					"        }",
+					"        const response = JSON.parse(res.stream.toString('utf8'));",
+					"        pm.collectionVariables.set(variableName, response.body.id);",
+					"    })",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "45a02104-e19f-4e05-bba7-2693194b7e0c",
+				"type": "text/javascript",
+				"exec": [
+					"deleteUser('user1');",
+					"deleteUser('user2');",
+					"",
+					"function deleteUser(variableName) {",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('BASE_URL') + '/users/' + pm.collectionVariables.get(variableName),",
+					"        method: 'DELETE',",
+					"        headers: 'Content-Type:application/json',",
+					"    }, function (err, res) {",
+					"        if (err) {",
+					"            throw new Error('Não conseguiu excluir o usuário')",
+					"            return",
+					"        }",
+					"    })",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "571c3ef0-c2ba-4e42-a136-33871d3d6ac4",
+			"key": "user1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "3c14eaf3-d8fc-4478-897e-2ec0dfd25dd2",
+			"key": "user2",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
